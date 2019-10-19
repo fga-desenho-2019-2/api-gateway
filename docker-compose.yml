@@ -1,0 +1,25 @@
+version: "3.5"
+services:
+  app:
+    container_name: api-gateway
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5002:5000
+    volumes:
+      - '.:/app'
+    environment:
+      - FLASK_APP=project/__init__.py
+      - FLASK_ENV=development
+      - APP_SETTINGS=project.config.DevConfig
+      - ORDERS_PATH=http://order-service:8000
+      - PAYMENT_PATH=http://payment-service:8000
+      - RESTAURANT_PATH=http://restaurant-service:8000
+      - USERS_PATH=http://user-service:8000
+    networks: 
+      - qr-comer
+networks: 
+  qr-comer:
+    external:
+      name: qr-comer
