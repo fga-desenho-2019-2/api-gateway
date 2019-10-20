@@ -20,7 +20,7 @@ linting:
   before_script:
     - pip install pylint
   script:
-    - pylint project/
+    - pylint project/api
   allow_failure: true
   <<: *all_branches
 
