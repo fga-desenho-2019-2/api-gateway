@@ -1,0 +1,26 @@
+stages:
+  - lint
+  
+.all_branches: &all_branches
+  only:
+    - /^feature\/+[0-9](-[a-zA-Z0-9_]+)*/
+    - /^bugfix\/+[0-9](-[a-zA-Z0-9_]+)*/
+    - master
+    - develop
+    - tags
+
+.protected_branches: &protected_branches
+  only:
+    - master
+    - develop
+
+linting:
+  image: python:3.6
+  stage: lint
+  before_script:
+    - pip install pylint
+  script:
+    - pylint project/
+  allow_failure: true
+  <<: *all_branches
+
