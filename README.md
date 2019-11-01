@@ -26,10 +26,25 @@ API Gateway para os microserviços do QR-Comer
 
     Uma requisição deve ser feita da seguinte forma:
 
-    ```
+    ```python
     import os
 
     response = requests.get("%s/nome_do_endpoit" % os.getenv('ORDERS_PATH'))
+    ```
+
+    #### Como pedir autenticação
+
+    Para fazer com que uma rota precise de autenticação pra ser acessada é só usar o decorator ```@needs_auth```
+
+    ex.:
+    ```python
+    from project.api.shared.auth_utils import needs_auth
+
+    @users_blueprint.route('/user/<int:id>', methods=['GET'])
+    @needs_auth
+    def get_user(id):
+      response = requests.get("%s/api/user/%s" % (os.getenv('USERS_PATH'), id))
+      return jsonify(response.json()), response.status_code
     ```
     
 
