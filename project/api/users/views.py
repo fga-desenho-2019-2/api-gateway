@@ -3,6 +3,8 @@ from flask_cors import CORS
 import requests
 import os
 
+from project.api.shared.auth_utils import needs_auth
+
 users_blueprint = Blueprint('users', __name__)
 CORS(users_blueprint)
 
@@ -13,11 +15,13 @@ def create_user():
     return jsonify(response.json()), response.status_code
 
 @users_blueprint.route('/user/<int:id>', methods=['GET'])
+@needs_auth
 def get_user(id):
     response = requests.get("%s/api/user/%s" % (os.getenv('USERS_PATH'), id))
     return jsonify(response.json()), response.status_code
 
 @users_blueprint.route('/user/list', methods=['GET'])
+@needs_auth
 def get_all_users():
     response = requests.get("%s/api/user/list/" % (os.getenv('USERS_PATH')))
     return jsonify(response.json()), response.status_code
