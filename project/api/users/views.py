@@ -14,10 +14,17 @@ def create_user():
     response = requests.post("%s/api/user/" % os.getenv('USERS_PATH'), json=data)
     return jsonify(response.json()), response.status_code
 
-@users_blueprint.route('/user/<int:id>', methods=['GET'])
+@users_blueprint.route('/user/<cpf>', methods=['GET'])
 @needs_auth
-def get_user(id):
-    response = requests.get("%s/api/user/%s" % (os.getenv('USERS_PATH'), id))
+def get_user(cpf):
+    response = requests.get("%s/api/get_user/%s" % (os.getenv('USERS_PATH'), cpf))
+    return jsonify(response.json()), response.status_code
+
+@users_blueprint.route('/user/<cpf>', methods=['PUT'])
+@needs_auth
+def put_user(cpf):
+    data = request.get_json()
+    response = requests.put("%s/api/edit_user/%s" % (os.getenv('USERS_PATH'), cpf), json=data)
     return jsonify(response.json()), response.status_code
 
 @users_blueprint.route('/user/list', methods=['GET'])
