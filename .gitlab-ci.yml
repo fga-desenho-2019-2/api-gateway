@@ -2,7 +2,6 @@ stages:
   - lint
   - test
   - build
-  - deploy
   
 .all_branches: &all_branches
   only:
@@ -59,13 +58,3 @@ build image:
     - docker build -t $IMAGE .
     - docker push $IMAGE
   <<: *all_branches
-
-deploy image:
-  stage: deploy
-  image: diemscott/rancher-cli-k8s:v2.0.2
-  script:
-    - echo 1 | rancher login -t "$RANCHER_API_TOKEN" "$RANCHER_SERVER_URL"
-    - rancher context switch "$CONTEXT_HOMOLOG"
-    - rancher kubectl -n homolog scale --current-replicas=1 --replicas=0 deployment/api-gateway
-    - rancher kubectl -n homolog scale --current-replicas=0 --replicas=1 deployment/api-gateway
-  <<: *protected_branches
