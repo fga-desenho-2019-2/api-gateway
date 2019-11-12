@@ -10,14 +10,9 @@ CORS(orders_blueprint)
 def order_bag():
     data = request.get_json()
 
-    # request pra checar pagamento
-    # response_payment = requests.post()
-    response_payment = 200
+    response_order = requests.post('%s/api/create_order/' % os.getenv('ORDERS_PATH'), json=data) 
 
-    # if response_payment.status_code == 200:
-    if response_payment == 200:
-        response_order = requests.post('%s/create_order/' % os.getenv('ORDERS_PATH'), json=data) 
-    
+    if response_order.status_code == 201:
         return jsonify(response_order.json()), response_order.status_code
-    else:
-        return 400
+
+    return 400
