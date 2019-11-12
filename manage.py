@@ -1,5 +1,6 @@
 from flask.cli import FlaskGroup
 from flask_cors import CORS
+from flask_script import Manager
 from project import create_app
 
 app = create_app()
