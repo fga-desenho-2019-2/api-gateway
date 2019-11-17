@@ -9,7 +9,7 @@ CORS(restaurant_blueprint)
 @restaurant_blueprint.route('/api/restaurants', methods=['GET'])
 def get_all_restaurant():
     response = requests.get('%s/api/restaurant' % os.getenv('RESTAURANT_PATH')) 
-
+    
     if response.status_code == 200:
         return jsonify(response.json()), response.status_code
 
@@ -18,9 +18,13 @@ def get_all_restaurant():
 @restaurant_blueprint.route('/api/restaurant/<int:pk>', methods=['GET'])
 def get_one_restaurant(pk):
     response = requests.get(f'%s/api/restaurant/{pk}' % os.getenv('RESTAURANT_PATH')) 
+    data = response.json()
+    
+    if data['image']:
+        data['image'] = f"http://restaurant.marques.rocks/api/restaurant-image/{pk}"
     
     if response.status_code == 200:
-        return jsonify(response.json()), response.status_code
+        return jsonify(data), response.status_code
 
     return response.status_code
 
@@ -37,8 +41,13 @@ def get_all_items():
 def get_one_item(pk):
     response = requests.get(f'%s/api/item/{pk}' % os.getenv('RESTAURANT_PATH')) 
     
+    data = response.json()
+
+    if data['image']:
+        data['image'] = f"http://restaurant.marques.rocks/api/item-image/{pk}"
+    
     if response.status_code == 200:
-        return jsonify(response.json()), response.status_code
+        return jsonify(data), response.status_code
 
     return response.status_code
 
