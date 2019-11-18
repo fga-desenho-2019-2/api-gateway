@@ -34,3 +34,10 @@ def restaurant_orders(cnpj, status):
 def update_status_order(id, status):
     response = requests.put("%s/api/update_status_order/%s/%s" % (os.getenv('ORDERS_PATH'), id, status))
     return jsonify(response.json()), response.status_code
+
+
+@orders_blueprint.route('/api/update-avaliation-order/<int:id>', methods=['PUT'])
+def update_avaliation_order(id):
+    data = request.get_json()
+    response = requests.put("%s/api/update_avaliation_order/%s" % (os.getenv('ORDERS_PATH'), id), json=data)
+    return jsonify(response.json()), response.status_code
