@@ -15,7 +15,7 @@ def get_all_restaurant():
 
     return response.status_code
 
-@restaurant_blueprint.route('/api/restaurant/<int:pk>', methods=['GET'])
+@restaurant_blueprint.route('/api/restaurant/<string:pk>', methods=['GET'])
 def get_one_restaurant(pk):
     response = requests.get(f'%s/api/restaurant/{pk}' % os.getenv('RESTAURANT_PATH')) 
     data = response.json()
@@ -69,3 +69,24 @@ def get_all_restaurant_categories():
         return jsonify(response.json()), response.status_code
 
     return response.status_code
+
+@restaurant_blueprint.route('/api/shoppings', methods=['GET'])
+def get_all_shoppings():
+    response = requests.get('%s/api/shopping' % os.getenv('RESTAURANT_PATH'))
+
+    if response.status_code == 200:
+        return jsonify(response.json()), response.status_code
+
+    return response.status_code
+
+@restaurant_blueprint.route('/api/shopping/<string:pk>', methods=['GET'])
+def get_one_shopping(pk):
+    response = requests.get(f'%s/api/shopping/{pk}' % os.getenv('RESTAURANT_PATH')) 
+    
+    data = response.json()
+
+    if response.status_code == 200:
+        return jsonify(data), response.status_code
+
+    return response.status_code
+
