@@ -15,7 +15,7 @@ def get_all_restaurant():
 
     return response.status_code
 
-@restaurant_blueprint.route('/api/restaurant/<int:pk>', methods=['GET'])
+@restaurant_blueprint.route('/api/restaurant/<str:pk>', methods=['GET'])
 def get_one_restaurant(pk):
     response = requests.get(f'%s/api/restaurant/{pk}' % os.getenv('RESTAURANT_PATH')) 
     data = response.json()
