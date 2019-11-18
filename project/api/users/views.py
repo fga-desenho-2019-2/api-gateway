@@ -59,37 +59,34 @@ def delete_user_image(cpf):
     response = requests.get("%s/user/delete_image/%s" % (os.getenv('USERS_PATH'), cpf))
     return jsonify(response.json()), response.status_code
 
-cards_blueprint = Blueprint('users', __name__)
-CORS(cards_blueprint)
-
-@cards_blueprint.route('/user/card', methods=['POST'])
-def create_card():
+@users_blueprint.route('/user/card/<string:cpf>', methods=['POST'])
+def create_card(cpf):
     data = request.get_json()
-    response = requests.post("%s/api/user/card" % os.getenv('USERS_PATH'), json=data)
+    response = requests.post("%s/api/user/create_card/%s" % (os.getenv('USERS_PATH'), cpf), json=data)
     return jsonify(response.json()), response.status_code
 
-@cards_blueprint.route('/user/card/<int:id>', methods=['GET'])
+@users_blueprint.route('/user/card/<int:id>', methods=['GET'])
 @needs_auth
 def get_card(id):
     response = requests.get("%s/api/user/card/%s" % (os.getenv('USERS_PATH'), id))
     return jsonify(response.json()), response.status_code
 
-@cards_blueprint.route('/user/card/<int:id>', methods=['PUT'])
+@users_blueprint.route('/user/card/<int:id>', methods=['PUT'])
 @needs_auth
 def put_card(id):
     response = requests.put("%s/api/user/card/%s" % (os.getenv('USERS_PATH'), id))
     return jsonify(response.json()), response.status_code
 
-@cards_blueprint.route('/user/card/<int:id>', methods=['DELETE'])
+@users_blueprint.route('/user/delete_card/<int:id>', methods=['DELETE'])
 @needs_auth
 def delete_card(id):
-    response = requests.put("%s/api/user/card/%s" % (os.getenv('USERS_PATH'), id))
-    return jsonify(response.json()), response.status_code
+    response = requests.delete("%s/api/user/delete_card/%s" % (os.getenv('USERS_PATH'), id))
+    return jsonify(response.status_code)
 
-@cards_blueprint.route('/user/user_cards/', methods=['GET'])
+@users_blueprint.route('/user/user_cards/<string:cpf>', methods=['GET'])
 @needs_auth
 def get_user_cards(cpf):
-    response = requests.get("%s/user/user_cards/%s" % (os.getenv('USERS_PATH'), cpf))
+    response = requests.get("%s/api/user/user_cards/%s" % (os.getenv('USERS_PATH'), cpf))
     return jsonify(response.json()), response.status_code
 
 
